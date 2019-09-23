@@ -6,4 +6,4 @@ build:
 	chown -R botuser:botuser *
 
 config:
-	cp  /home/botuser/botlogin.txt /home/botuser/PhantomBot/dist/PhantomBot-3.0.0;
+	cp  /home/botuser/botlogin.txt /home/botuser/PhantomBot/dist/PhantomBot-3.0.0/config/;
