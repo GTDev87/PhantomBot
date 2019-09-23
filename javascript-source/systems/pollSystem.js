@@ -120,7 +120,13 @@
         $.inidb.setAutoCommit(true);
 
         if (poll.time > 0) {
-            $.say($.lang.get('pollsystem.poll.started', $.resolveRank(pollMaster), time, poll.minVotes, poll.question, optionsStr));
+            if(poll.options.length < 6) {
+                poll.options.forEach(function (opt, i) {
+                    $.say($.lang.get('pollsystem.poll.started.option', (i + 1) + ") " + opt));
+                });
+            } else {
+                $.say($.lang.get('pollsystem.poll.started', $.resolveRank(pollMaster), time, poll.minVotes, poll.question, optionsStr));
+            }
 
             timeout = setTimeout(function() {
                 endPoll();
