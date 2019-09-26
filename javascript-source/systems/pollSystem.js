@@ -23,16 +23,14 @@
  */
 
 function asyncLoop(times, loopFn, callback) {
-    var number = 0;
-    function asyncIterate (timesLeftOver) {
-        if(timesLeftOver === 0) { return callback(); }
-        loopFn(number, function () {
-            number = number + 1;
-            asyncIterate(timesLeftOver - 1);
+    function asyncIterate (time) {
+        if(time === times) { return callback(); }
+        loopFn(time, function () {
+            asyncIterate(time + 1);
         });
     } 
 
-    asyncIterate(times);
+    asyncIterate(0);
 };
 
 (function() {
@@ -117,7 +115,7 @@ function asyncLoop(times, loopFn, callback) {
         poll.draftRunning = true;
         asyncLoop(
             cards,
-            function(count, callback) {
+            function(count, itercallback) {
                 const cardsRemaining = cards - count;
                 $.say($.lang.get('pollsystem.draft.test', cardsRemaining, parseInt(cardsToTime(cardsRemaining))));
                 runPoll("Card " + (count + 1), valueToCountingArray(cardsRemaining), parseInt(cardsToTime(cardsRemaining)), pollMaster, 1, function(winner) {
@@ -131,7 +129,7 @@ function asyncLoop(times, loopFn, callback) {
                     } else {
                         $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
                     }
-                    callback();
+                    itercallback();
                 });
             },
             function() {
