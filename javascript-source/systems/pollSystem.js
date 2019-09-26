@@ -117,8 +117,10 @@ function asyncLoop(times, loopFn, callback) {
             cards,
             function(count, itercallback) {
                 const cardsRemaining = cards - count;
-                $.say($.lang.get('pollsystem.draft.test', cardsRemaining, parseInt(cardsToTime(cardsRemaining))));
-                runPoll("Card " + (count + 1), valueToCountingArray(cardsRemaining), parseInt(cardsToTime(cardsRemaining)), pollMaster, 1, function(winner) {
+                const question = "Card " + (count + 1);
+                const time = parseInt(cardsToTime(cardsRemaining));
+                $.say($.lang.get('pollsystem.draft.test', cardsRemaining, time));
+                runPoll(question, valueToCountingArray(cardsRemaining), time, pollMaster, 1, function(winner) {
                     if (winner === false) {
                         $.say($.lang.get('pollsystem.runpoll.novotes', question));
                         return;
