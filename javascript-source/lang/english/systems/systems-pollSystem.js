@@ -19,6 +19,9 @@ $.lang.register('pollsystem.vote.nopoll', 'There is currently no poll running.')
 $.lang.register('pollsystem.vote.already', 'You have already voted!');
 $.lang.register('pollsystem.vote.invalid', '"$1" is not a valid option!');
 $.lang.register('pollsystem.vote.success', 'You have voted "$1" on "$2".');
+$.lang.register('pollsystem.draft.started', '$1 started a draft');
+$.lang.register('pollsystem.draft.running', 'There is a draft running');
+$.lang.register('pollsystem.draft.usage', 'Usage: !draft open [count]');
 $.lang.register('pollsystem.poll.started', '$1 started a poll for $2 seconds (minimum votes: $3): $4! Use "!vote [option]" to vote. Options: $5');
 $.lang.register('pollsystem.poll.started.option', 'Option: $1');
 $.lang.register('pollsystem.poll.started.nottime', '$1 started a poll (minimum votes: $2): $3! Use "!vote [option]" to vote. Options: $4');
@@ -32,5 +35,6 @@ $.lang.register('pollsystem.open.moreoptions', 'More than one option is required
 $.lang.register('pollsystem.runpoll.novotes', 'The poll on "$1" has ended! Not enough votes were cast!');
 $.lang.register('pollsystem.runpoll.winner', 'The poll on "$1" has ended! The winner is "$2"!');
 $.lang.register('pollsystem.runpoll.tie', 'The poll on "$1" has ended in a tie! Check !poll results.');
+$.lang.register('pollsystem.runpoll.tieWinner', 'Randomly Chosen $1.');
 $.lang.register('pollsystem.runpoll.started', 'Poll started! Use "!poll close" to end the poll manually');
 $.lang.register('pollsystem.close.nopoll', 'There is currently no poll running.');

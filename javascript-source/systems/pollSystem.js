@@ -21,6 +21,18 @@
  * This module enables the channel owner to start/manage polls
  * Start/stop polls is exported to $.poll for use in other scripts
  */
+
+function asyncLoop(times, loopFn, callback) {
+    var number = 0;
+    function asyncIterate (timesLeftOver) {
+        if(times === 0) { return callback(); }
+        number = number + 1;
+        loopFn(number, function () { asyncIterate(times - 1); });
+    } 
+
+    asyncIterate(times);
+}
+
 (function() {
     var poll = {
             pollId: 0,
@@ -69,7 +81,54 @@
     // Compile regular expressions.
     var rePollOpenFourOptions = new RegExp(/"([\w\W]+)"\s+"([\w\W]+)"\s+(\d+)\s+(\d+)/),
         rePollOpenThreeOptions = new RegExp(/"([\w\W]+)"\s+"([\w\W]+)"\s+(\d+)/),
-        rePollOpenTwoOptions = new RegExp(/"([\w\W]+)"\s+"([\w\W]+)"/);
+        rePollOpenTwoOptions = new RegExp(/"([\w\W]+)"\s+"([\w\W]+)"/),
+        rePollOpenOneOptions = new RegExp(/"([\w\W]+)"\s+(\d+)/);
+
+    function cardsToTime (count) {
+        let cardsToTimeArray = [5, 10, 20, 30, 40, 50, 60, 60, 70, 80, 90, 90];
+
+        if (count < 1) { return 5; }
+        if (count > 12) { return 90; }
+        return cardsToTimeArray[count - 1];
+    }
+
+    function valueToCountingArray (count) {
+        var arr = new Array(count);
+        for(var i = 0; i < count; ++i) {
+            arr[i] = "" + (i + 1);
+        }
+        return arr;
+    }
+        
+
+    /**
+     * @function runDraft
+     * @export $.poll
+     * @param {Number} count
+     * @param {string} pollMaster
+     * @param {Function} callback
+     * @returns {boolean}
+     */
+    function runDraft(count, pollMaster, callback) {
+        asyncLoop(
+            count,
+            function(count) {
+                runPoll("Card " + (count + 1), valueToCountingArray(count), parseInt(cardsToTime(count)), sender, 1, function(winner) {
+                    if (winner === false) {
+                        $.say($.lang.get('pollsystem.runpoll.novotes', question));
+                        return;
+                    }
+                    if (poll.hasTie) {
+                        $.say($.lang.get('pollsystem.runpoll.tie', question));
+                        $.say($.lang.get('pollsystem.runpoll.tieWinner', question, winner));
+                    } else {
+                        $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
+                    }
+                })
+            },
+            function() {}
+        );
+    };
 
     /**
      * @function runPoll
@@ -248,7 +307,7 @@
         /**
          * @commandpath poll - Announce information about a poll, if one is running.
          */
-        if (command.equalsIgnoreCase('poll')) {
+        if (command.equalsIgnoreCase('poll') || command.equalsIgnoreCase('draft')) {
             if (!action) {
                 if (poll.pollRunning) {
                     var optionsStr = "";
@@ -277,6 +336,37 @@
                 } else {
                     $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.results.404'));
                 }
+            }
+
+            /**
+             * @commandpath draft open count ["option1, option2, ..."] [seconds] [min votes] - Starts a poll with question and options. Optionally provide seconds and min votes.
+             * @param {Number} count
+             * @param {Function} callback
+             */
+
+            if (command.equalsIgnoreCase('draft') && action.equalsIgnoreCase('open')) {
+                var count = 1;
+
+                argsString = argsString + ""; // Cast as a JavaScript string.
+
+                if (argsString.match(rePollOpenOneOptions)) {
+                    count = parseInt(argsString.match(rePollOpenOneOptions)[1]);
+                } else {
+                    $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.usage'));
+                    return;
+                }
+
+                if (!count) {
+                    $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.usage'));
+                    return;
+                }
+
+                if (runDraft(count, sender)) {
+                    $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.started'));
+                } else {
+                    $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.running'));
+                }
+                return;
             }
 
             /**
@@ -323,6 +413,7 @@
                         }
                         if (poll.hasTie) {
                             $.say($.lang.get('pollsystem.runpoll.tie', question));
+                            $.say($.lang.get('pollsystem.runpoll.tieWinner', question, winner));
                         } else {
                             $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
                         }
@@ -359,6 +450,7 @@
 
     /** Export functions to API */
     $.poll = {
+        runDraft: runDraft,
         runPoll: runPoll,
         endPoll: endPoll
     };
