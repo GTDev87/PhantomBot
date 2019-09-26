@@ -123,9 +123,7 @@ function asyncLoop(times, loopFn, callback) {
                 runPoll(question, valueToCountingArray(cardsRemaining), time, pollMaster, 1, function(winner) {
                     if (winner === false) {
                         $.say($.lang.get('pollsystem.runpoll.novotes', question));
-                        return;
-                    }
-                    if (poll.hasTie) {
+                    } else if (poll.hasTie) {
                         $.say($.lang.get('pollsystem.runpoll.tie', question));
                         $.say($.lang.get('pollsystem.runpoll.tieWinner', question, winner));
                     } else {
