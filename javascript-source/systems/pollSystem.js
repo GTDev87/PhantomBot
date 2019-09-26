@@ -85,7 +85,7 @@ function asyncLoop(times, loopFn, callback) {
         rePollOpenOneOptions = new RegExp(/"([\w\W]+)"\s+(\d+)/);
 
     function cardsToTime (count) {
-        let cardsToTimeArray = [5, 10, 20, 30, 40, 50, 60, 60, 70, 80, 90, 90];
+        var cardsToTimeArray = [5, 10, 20, 30, 40, 50, 60, 60, 70, 80, 90, 90];
 
         if (count < 1) { return 5; }
         if (count > 12) { return 90; }
