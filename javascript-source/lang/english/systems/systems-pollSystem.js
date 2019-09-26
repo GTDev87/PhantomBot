@@ -20,6 +20,7 @@ $.lang.register('pollsystem.vote.already', 'You have already voted!');
 $.lang.register('pollsystem.vote.invalid', '"$1" is not a valid option!');
 $.lang.register('pollsystem.vote.success', 'You have voted "$1" on "$2".');
 $.lang.register('pollsystem.draft.started', '$1 started a draft');
+$.lang.register('pollsystem.draft.complete', 'Draft is complete!');
 $.lang.register('pollsystem.draft.running', 'There is a draft running');
 $.lang.register('pollsystem.draft.usage', 'Usage: !draft open [count]');
 $.lang.register('pollsystem.poll.started', '$1 started a poll for $2 seconds (minimum votes: $3): $4! Use "!vote [option]" to vote. Options: $5');

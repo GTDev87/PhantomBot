@@ -41,6 +41,7 @@ function asyncLoop(times, loopFn, callback) {
             voters: [],
             callback: function() {},
             pollRunning: false,
+            draftRunning: false,
             pollMaster: '',
             time: 0,
             question: '',
@@ -110,10 +111,12 @@ function asyncLoop(times, loopFn, callback) {
      * @returns {boolean}
      */
     function runDraft(count, pollMaster, callback) {
+        if (poll.draftRunning) { return false; }
+        poll.draftRunning = true;
         asyncLoop(
             count,
             function(count, callback) {
-                runPoll("Card " + (count + 1), valueToCountingArray(count), parseInt(cardsToTime(count)), sender, 1, function(winner) {
+                runPoll("Card " + (count + 1), valueToCountingArray(count), parseInt(cardsToTime(count)), pollMaster, 1, function(winner) {
                     if (winner === false) {
                         $.say($.lang.get('pollsystem.runpoll.novotes', question));
                         return;
@@ -127,8 +130,12 @@ function asyncLoop(times, loopFn, callback) {
                     callback();
                 })
             },
-            function() {}
+            function() {
+                poll.draftRunning = false;
+                callback();
+            }
         );
+        return true;
     };
 
     /**
@@ -362,7 +369,7 @@ function asyncLoop(times, loopFn, callback) {
                     return;
                 }
 
-                if (runDraft(count, sender)) {
+                if (runDraft(count, sender, function() { $.say($.lang.get('pollsystem.draft.complete')); })) {
                     $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.started'));
                 } else {
                     $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.running'));
