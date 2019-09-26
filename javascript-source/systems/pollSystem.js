@@ -443,9 +443,11 @@ function asyncLoop(times, loopFn, callback) {
      */
     $.bind('initReady', function() {
         $.registerChatCommand('./systems/pollSystem.js', 'poll', 2);
+        $.registerChatCommand('./systems/pollSystem.js', 'draft', 2);
         $.registerChatCommand('./systems/pollSystem.js', 'vote', 7);
         $.registerChatSubcommand('poll', 'results', 2);
         $.registerChatSubcommand('poll', 'open', 2);
+        $.registerChatSubcommand('draft', 'open', 2);
         $.registerChatSubcommand('poll', 'close', 2);
     });
 
