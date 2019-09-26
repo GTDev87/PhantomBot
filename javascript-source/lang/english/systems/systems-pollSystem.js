@@ -19,7 +19,8 @@ $.lang.register('pollsystem.vote.nopoll', 'There is currently no poll running.')
 $.lang.register('pollsystem.vote.already', 'You have already voted!');
 $.lang.register('pollsystem.vote.invalid', '"$1" is not a valid option!');
 $.lang.register('pollsystem.vote.success', 'You have voted "$1" on "$2".');
-$.lang.register('pollsystem.draft.started', '$1 started a draft');
+$.lang.register('pollsystem.draft.started', 'started a draft with $1 cards');
+$.lang.register('pollsystem.draft.test', 'testing draft poll $1 cards');
 $.lang.register('pollsystem.draft.complete', 'Draft is complete!');
 $.lang.register('pollsystem.draft.running', 'There is a draft running');
 $.lang.register('pollsystem.draft.usage', 'Usage: !draft open [count]');

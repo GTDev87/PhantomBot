@@ -117,6 +117,7 @@ function asyncLoop(times, loopFn, callback) {
             cards,
             function(count, callback) {
                 const cardsRemaining = cards - count;
+                $.say($.lang.get('pollsystem.draft.test', cardsRemaining));
                 runPoll("Card " + (count + 1), valueToCountingArray(cardsRemaining), parseInt(cardsToTime(cardsRemaining)), pollMaster, 1, function(winner) {
                     if (winner === false) {
                         $.say($.lang.get('pollsystem.runpoll.novotes', question));
@@ -371,7 +372,7 @@ function asyncLoop(times, loopFn, callback) {
                 }
 
                 if (runDraft(count, sender, function() { $.say($.lang.get('pollsystem.draft.complete')); })) {
-                    $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.started'));
+                    $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.started', count));
                 } else {
                     $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.running'));
                 }
