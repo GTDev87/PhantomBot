@@ -82,7 +82,7 @@ function asyncLoop(times, loopFn, callback) {
     var rePollOpenFourOptions = new RegExp(/"([\w\W]+)"\s+"([\w\W]+)"\s+(\d+)\s+(\d+)/),
         rePollOpenThreeOptions = new RegExp(/"([\w\W]+)"\s+"([\w\W]+)"\s+(\d+)/),
         rePollOpenTwoOptions = new RegExp(/"([\w\W]+)"\s+"([\w\W]+)"/),
-        rePollOpenOneOptions = new RegExp(/"([\w\W]+)"\s+(\d+)/);
+        draftOpenOneOptions = new RegExp(/(\d+)/);
 
     function cardsToTime (count) {
         var cardsToTimeArray = [5, 10, 20, 30, 40, 50, 60, 60, 70, 80, 90, 90];
@@ -350,8 +350,8 @@ function asyncLoop(times, loopFn, callback) {
 
                 argsString = argsString + ""; // Cast as a JavaScript string.
 
-                if (argsString.match(rePollOpenOneOptions)) {
-                    count = parseInt(argsString.match(rePollOpenOneOptions)[1]);
+                if (argsString.match(draftOpenOneOptions)) {
+                    count = parseInt(argsString.match(draftOpenOneOptions)[1]);
                 } else {
                     $.say($.whisperPrefix(sender) + $.lang.get('pollsystem.draft.usage'));
                     return;
