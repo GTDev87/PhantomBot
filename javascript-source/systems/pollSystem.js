@@ -25,13 +25,13 @@
 function asyncLoop(times, loopFn, callback) {
     var number = 0;
     function asyncIterate (timesLeftOver) {
-        if(times === 0) { return callback(); }
+        if(timesLeftOver === 0) { return callback(); }
         number = number + 1;
-        loopFn(number, function () { asyncIterate(times - 1); });
+        loopFn(number, function () { asyncIterate(timesLeftOver - 1); });
     } 
 
     asyncIterate(times);
-}
+};
 
 (function() {
     var poll = {
@@ -90,7 +90,7 @@ function asyncLoop(times, loopFn, callback) {
         if (count < 1) { return 5; }
         if (count > 12) { return 90; }
         return cardsToTimeArray[count - 1];
-    }
+    };
 
     function valueToCountingArray (count) {
         var arr = new Array(count);
@@ -98,7 +98,7 @@ function asyncLoop(times, loopFn, callback) {
             arr[i] = "" + (i + 1);
         }
         return arr;
-    }
+    };
         
 
     /**
@@ -112,7 +112,7 @@ function asyncLoop(times, loopFn, callback) {
     function runDraft(count, pollMaster, callback) {
         asyncLoop(
             count,
-            function(count) {
+            function(count, callback) {
                 runPoll("Card " + (count + 1), valueToCountingArray(count), parseInt(cardsToTime(count)), sender, 1, function(winner) {
                     if (winner === false) {
                         $.say($.lang.get('pollsystem.runpoll.novotes', question));
@@ -124,6 +124,7 @@ function asyncLoop(times, loopFn, callback) {
                     } else {
                         $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
                     }
+                    callback();
                 })
             },
             function() {}
