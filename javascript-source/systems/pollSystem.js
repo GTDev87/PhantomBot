@@ -110,13 +110,14 @@ function asyncLoop(times, loopFn, callback) {
      * @param {Function} callback
      * @returns {boolean}
      */
-    function runDraft(count, pollMaster, callback) {
+    function runDraft(cards, pollMaster, callback) {
         if (poll.draftRunning) { return false; }
         poll.draftRunning = true;
         asyncLoop(
-            count,
+            cards,
             function(count, callback) {
-                runPoll("Card " + (count + 1), valueToCountingArray(count), parseInt(cardsToTime(count)), pollMaster, 1, function(winner) {
+                const cardsRemaining = cards - count;
+                runPoll("Card " + (count + 1), valueToCountingArray(cardsRemaining), parseInt(cardsToTime(cardsRemaining)), pollMaster, 1, function(winner) {
                     if (winner === false) {
                         $.say($.lang.get('pollsystem.runpoll.novotes', question));
                         return;
