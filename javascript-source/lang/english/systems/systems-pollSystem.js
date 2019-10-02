@@ -37,6 +37,6 @@ $.lang.register('pollsystem.open.moreoptions', 'More than one option is required
 $.lang.register('pollsystem.runpoll.novotes', 'The poll on "$1" has ended! Not enough votes were cast!');
 $.lang.register('pollsystem.runpoll.winner', 'The poll on "$1" has ended! The winner is "$2"!');
 $.lang.register('pollsystem.runpoll.tie', 'The poll on "$1" has ended in a tie! Check !poll results.');
-$.lang.register('pollsystem.runpoll.tieWinner', 'Randomly Chosen $1.');
+$.lang.register('pollsystem.runpoll.tieWinner', 'The poll on "$1" Randomly Chosen Winner $2.');
 $.lang.register('pollsystem.runpoll.started', 'Poll started! Use "!poll close" to end the poll manually');
 $.lang.register('pollsystem.close.nopoll', 'There is currently no poll running.');
