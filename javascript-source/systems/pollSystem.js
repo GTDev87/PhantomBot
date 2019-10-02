@@ -86,12 +86,14 @@ function asyncLoop(times, loopFn, callback) {
         draftOpenOneOptions = new RegExp(/(\d+)/);
 
     function cardsToTime (count) {
-        var cardsToTimeArray = [5, 10, 20, 30, 40, 50, 60, 60, 70, 80, 90, 90];
+        var cardsToTimeArray = [5, 10, 20, 20, 30, 40, 50, 50, 60, 70, 80, 80];
 
         if (count < 1) { return 5; }
         if (count > 12) { return 90; }
         return cardsToTimeArray[count - 1];
     };
+
+    const timeToStart = 5;
 
     function valueToCountingArray (count) {
         var arr = new Array(count);
@@ -100,7 +102,6 @@ function asyncLoop(times, loopFn, callback) {
         }
         return arr;
     };
-        
 
     /**
      * @function runDraft
@@ -119,18 +120,20 @@ function asyncLoop(times, loopFn, callback) {
                 const cardsRemaining = cards - count;
                 const question = "Card " + (count + 1);
                 const time = parseInt(cardsToTime(cardsRemaining));
-                $.say($.lang.get('pollsystem.draft.test', cardsRemaining, time));
-                runPoll(question, valueToCountingArray(cardsRemaining), time, pollMaster, 1, function(winner) {
-                    if (winner === false) {
-                        $.say($.lang.get('pollsystem.runpoll.novotes', question));
-                    } else if (poll.hasTie) {
-                        $.say($.lang.get('pollsystem.runpoll.tie', question));
-                        $.say($.lang.get('pollsystem.runpoll.tieWinner', question, winner));
-                    } else {
-                        $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
-                    }
-                    itercallback();
-                });
+                $.say($.lang.get('pollsystem.draft.test', timeToStart, cardsRemaining, time));
+                setTimeout(function(){
+                    runPoll(question, valueToCountingArray(cardsRemaining), time, pollMaster, 1, function(winner) {
+                        if (winner === false) {
+                            $.say($.lang.get('pollsystem.runpoll.novotes', question));
+                        } else if (poll.hasTie) {
+                            $.say($.lang.get('pollsystem.runpoll.tie', question));
+                            $.say($.lang.get('pollsystem.runpoll.tieWinner', question, winner));
+                        } else {
+                            $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
+                        }
+                        itercallback();
+                    });
+                }, 1000 * timeToStart);
             },
             function() {
                 poll.draftRunning = false;
