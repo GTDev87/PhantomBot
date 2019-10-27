@@ -126,7 +126,7 @@ function asyncLoop(times, loopFn, callback) {
                         if (winner === false) {
                             $.say($.lang.get('pollsystem.runpoll.novotes', question));
                         } else if (poll.hasTie) {
-                            $.say($.lang.get('pollsystem.runpoll.tie', question));
+                            // $.say($.lang.get('pollsystem.runpoll.tie', question));
                             $.say($.lang.get('pollsystem.runpoll.tieWinner', question, winner));
                         } else {
                             $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
@@ -425,7 +425,7 @@ function asyncLoop(times, loopFn, callback) {
                             return;
                         }
                         if (poll.hasTie) {
-                            $.say($.lang.get('pollsystem.runpoll.tie', question));
+                            // $.say($.lang.get('pollsystem.runpoll.tie', question));
                             $.say($.lang.get('pollsystem.runpoll.tieWinner', question, winner));
                         } else {
                             $.say($.lang.get('pollsystem.runpoll.winner', question, winner));
